@@ -69,11 +69,12 @@ public class Livro implements Serializable {
 
     @Override
     public String toString() {
-        return "Livro{"
+        /*return "Livro{"
                 + "id=" + id
                 + ", titulo='" + titulo + '\''
                 + ", autor='" + autor + '\''
-                + '}';
+                + '}';*/
+        return titulo;
     }
 
     public String getIsbn() {

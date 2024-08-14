@@ -83,6 +83,17 @@ public class PersistenciaJPA {
             throw e;
         }
     }
+    
+    public void atualizar(Livro livro) {
+        try {
+            entity.getTransaction().begin();
+            entity.merge(livro); // Atualiza o objeto no banco de dados
+            entity.getTransaction().commit();
+        } catch (Exception e) {
+            entity.getTransaction().rollback();
+            System.out.println("Erro ao atualizar o livro: " + e.getMessage());
+        }
+    }
 
     public List<Livro> listLivro() {
         TypedQuery<Livro> query1 = entity.createQuery("SELECT l FROM Livro l", Livro.class);

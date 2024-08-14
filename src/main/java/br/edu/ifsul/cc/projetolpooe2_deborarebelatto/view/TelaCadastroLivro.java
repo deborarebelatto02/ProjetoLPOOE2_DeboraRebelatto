@@ -18,6 +18,9 @@ import javax.swing.*;
  */
 public class TelaCadastroLivro extends javax.swing.JFrame {
 
+    private Livro livro;
+    private Livro livroOriginal;
+    private boolean livroEditado = false;
     private JTable table;
     PersistenciaJPA jpa;
 
@@ -27,6 +30,8 @@ public class TelaCadastroLivro extends javax.swing.JFrame {
     public TelaCadastroLivro() {
         setTitle("Gerenciamento de Livros");
         initComponents();
+        //adicionarLivro();
+        jpa = new PersistenciaJPA();
         setVisible(true);
     }
 
@@ -43,8 +48,34 @@ public class TelaCadastroLivro extends javax.swing.JFrame {
         jpa.persist(livro);
         visualizarLivros();
         JOptionPane.showMessageDialog(this, "Livro adicionado com sucesso!");
+        dispose();
+    }
+    
+    /*private void adicionarLivro(){
+        jpa = new PersistenciaJPA();
+            jpa.conexaoAberta();
+            jpa.persist(livro);
+            jpa.fecharConexao();
+            dispose();
+    }*/
+
+    private void salvarAlteracoes() {
+        if (!txtTitulo.getText().equals(livroOriginal.getTitulo()) ||
+            !txtAutor.getText().equals(livroOriginal.getAutor()) ||
+            !txtIsbn.getText().equals(livroOriginal.getIsbn())) {
+
+            livroOriginal.setTitulo(txtTitulo.getText());
+            livroOriginal.setAutor(txtAutor.getText());
+            livroOriginal.setIsbn(txtIsbn.getText());
+
+            livroEditado = true;
+        }
     }
 
+    public boolean isLivroEditado() {
+        return livroEditado;
+    }
+    
     private void editarLivro() throws Exception {
         // Código para editar um livro existente
         int selectedRow = table.getSelectedRow();
@@ -241,6 +272,7 @@ public class TelaCadastroLivro extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(TelaCadastroLivro.class.getName()).log(Level.SEVERE, null, ex);
         }
+        salvarAlteracoes();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnVizualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVizualizarActionPerformed
